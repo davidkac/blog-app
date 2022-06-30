@@ -1,11 +1,11 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import AppPosts from './pages/AppPosts';
-import AddPosts from './pages/AddPost';
+import AddPost from './pages/AddPost';
 
 function App() {
   return (
-    <div className="App">
+    <div >
       <Router>
         <nav>
           <ul>
@@ -16,12 +16,15 @@ function App() {
         <Switch>
           <Route exact path="/posts">
             <AppPosts/>
-            <Route exact path="/add">
-              <AddPosts />
             </Route>
-          </Route>
+            <Route exact path="/add">
+              <AddPost />
+            </Route>
+            <Route exact path="/edit/:id">
+              <AddPost />
+            </Route>
         </Switch>
-      </Router>
+      </Router>x§
     </div>
   );
 }

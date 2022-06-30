@@ -1,18 +1,34 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import PostService from "../services/PostService";
-const history = useHistory;
 function AddPost() {
 
+const history= useHistory();
+const {id} = useParams()
   const [newPost, setNewPost] = useState({
     title: "",
     text: "",
   });
 
-  const handleSubmit = async () => {
-    await PostService.add(newPost);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+   if(id){
+      await PostService.edit(id, newPost)
+   }
+   else
+   { await PostService.add(newPost);}
+    
     history.push("/posts");
   };
+
+  const handleReset = () => {
+      setNewPost({
+        title:"",
+        text:""
+      });
+  }
+
+  
  
 
   return (
@@ -28,6 +44,7 @@ function AddPost() {
             setNewPost({ ...newPost, title: target.value })
           }
         />
+        <br></br>
         <input
           type="text"
           required
@@ -38,7 +55,8 @@ function AddPost() {
             setNewPost({ ...newPost, text: target.value })
           }
         />
-        <button>Add Post</button>
+        <button>{id ? 'Edit' : 'Add post'}</button>
+        <button type="button"  onClick={handleReset}>Reset</button>
       </form>
     </div>
   );

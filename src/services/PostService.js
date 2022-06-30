@@ -2,8 +2,8 @@ import axios from 'axios';
 
 class PostService{
     constructor() {
-        this.httpClient = axios.create({
-            baseURL: 'http://localhost:3003/api'
+        this.client = axios.create({
+            baseURL: 'http://localhost:3000/api'
         })
     }
 
@@ -41,6 +41,31 @@ class PostService{
         }
 
         return null;
+    }
+
+    async edit(id,newPost){
+        try {
+            const {data} = await this.client.put(`/posts/${id}`,newPost)
+
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+
+        return null;
+
+    }
+
+    async delete(Id) {
+        try {
+            const {data} = await this.client.delete(`/posts/${Id}`)
+
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+
+        return [];
     }
 
 

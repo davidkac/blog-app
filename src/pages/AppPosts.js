@@ -1,9 +1,12 @@
 import React, {useState,useEffect} from 'react';
 import SinglePost from '../components/SinglePost';
 import PostService from '../services/PostService';
+import {useHistory} from 'react-router-dom';
 
 
 function AppPosts() {
+
+    const history = useHistory();
 
     const [posts,setPosts] = useState([]);
 
@@ -18,6 +21,28 @@ function AppPosts() {
     },[]);
 
 
+    const handleEdit = (id) => {
+        history.push(`edit/${id}`);
+      };
+
+
+      const handleDelete = async (Id) => {
+        const response = prompt(
+          "Are you sure you want to delete this car ?\n Enter 'Yes' if you are"
+        );
+    
+        if (response !== 'Yes') {
+          return;
+        }
+    
+        const data = await PostService.delete(Id);
+    
+        if (data.count > 0) {
+          setPosts(posts.filter(({ id }) => id !== Id));
+        }
+      };
+
+
 
     return (
         <div>
@@ -30,6 +55,8 @@ function AppPosts() {
                 id={post.id}
                 title={post.title}
                 text={post.text}
+                editCallBack={handleEdit}
+                handleDelete={handleDelete}
              
                 />
             ))}
